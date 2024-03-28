@@ -1,0 +1,13 @@
+apiVersion: kuma.io/v1alpha1
+kind: ExternalService
+mesh: default
+metadata:
+  name: kafka1
+spec:
+  tags:
+    kuma.io/service: kafka1
+    kuma.io/protocol: kafka # optional, one of http, http2, tcp, grpc, kafka
+  networking:
+    address: 172.24.0.3:29092
+    tls:
+      enabled: false
