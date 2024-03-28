@@ -1,5 +1,9 @@
 1. Setup kafka on docker
 
+```
+docker-compose up --build -d
+```
+
 2. Create k3d cluster on the same network
 
 ```
@@ -8,12 +12,16 @@ k3d cluster create kumakafka --network external-service-with-kafka-protocol_defa
 
 3. Check IPs
 
-4. Put the correct ip in docker-compose:
+4. Put the correct ip in docker-compose and re-run:
 
 ```
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,PLAINTEXT_HOST://172.24.0.7:39092
       ...
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,PLAINTEXT_HOST://172.24.0.8:29092
+```
+
+```bash
+docker-compose down && docker-compose up --build -d
 ```
 
 5. run consumer / producer
@@ -32,6 +40,8 @@ kubectl -n kafka run kafka-producer -ti --image=strimzi/kafka:0.17.0-kafka-2.4.0
 ```
 kubectl -n kafka run kafka-consumer -ti --image=strimzi/kafka:0.17.0-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server 172.24.0.8:29092,172.24.0.7:39092 --topic my-topic --from-beginning
 ```
+
+Check it works.
 
 6. Install kuma 2.5.4
 
